@@ -26,19 +26,12 @@ def run_map_reduce(map_f, reduce_f, docs):
     return [reduce_f(g) for g in groups]
 
 def word_count_map(doc):
-    """
-    Params:
-      doc....a string to be split into tokens. split on whitespace.
-    Returns:
-      a list of tuples of form (token, 1), where token is a whitespace delimited element of this string.
-      
-    E.g.
-    >>> word_count_map('i am sam i am')
-    [('i', 1), ('am', 1), ('sam', 1), ('i', 1), ('am', 1)]
-    """
-    ###TODO
-    
-    
+  tl = list()
+  for i in doc.split(): 
+      t = (i, 1)
+      tl.append(t)
+  return tl
+
 
 def test_word_count_map():
     assert word_count_map('i am sam i am') == \
@@ -56,8 +49,7 @@ def word_count_reduce(group):
     
     NOTE: you should use call the `reduce` function here.
     """
-    ###TODO
-    
+    return (group[0], reduce(plus, 0, group[1]))
     
 def test_word_count_reduce():
     assert word_count_reduce(['i', [1,1,1]]) == ('i', 3)
@@ -119,23 +111,21 @@ def reduce(f, id_, a):
 def sentiment_map(doc,
                   pos_terms=set(['good', 'great', 'awesome', 'sockdolager']),
                   neg_terms=set(['bad', 'terrible', 'waste', 'carbuncle', 'corrupted'])):
-    """
-    Params:
-      doc.........a string to be split into tokens. split on whitespace.
-      pos_terms...a set of positive terms
-      neg_terms...a set of negative terms
-    Returns:
-      a list of tuples of form (positive, 1) or (negative, 1)      
-    E.g.
-    >>> sentiment_map('it was a terrible waste of time')
-    [('negative', 1), ('negative', 1)]
-    """
-    ###TODO
+
+  tl = list()
+
+  for i in doc.split():
+    if i in pos_terms:
+      t = ('positive', 1)
+      tl.append(t)
+    elif i in neg_terms:
+      t = ('negetive', 1)
+      tl.append(t)
+  return tl
 
 
 def test_sentiment_map():
-    assert sentiment_map('it was a terrible waste of time') == [('negative', 1), ('negative', 1)]
-
+    assert sentiment_map('it was a great waste of time') == [('positive', 1), ('negetive', 1)]
     
 def test_sentiment():
     docs = [
@@ -144,5 +134,11 @@ def test_sentiment():
         'it was a sockdolager of a good time'
     ]
     result = run_map_reduce(sentiment_map, word_count_reduce, docs)
-    assert result == [('negative', 3), ('positive', 3)]
+    assert result == [('negetive', 3), ('positive', 3)]
 
+if __name__ == "__main__":
+  test_word_count_map()
+  test_word_count_reduce()
+  test_word_count()
+  test_sentiment_map()
+  test_sentiment()

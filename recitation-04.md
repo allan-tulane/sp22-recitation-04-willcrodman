@@ -1,6 +1,6 @@
 # CMPS 2200  Recitation 04
 
-**Name (Team Member 1):**_________________________  
+**Name (Team Member 1):**_______Will Rodman_______  
 **Name (Team Member 2):**_________________________
 
 
@@ -36,8 +36,13 @@ To use this function to count words, you'll need to implement your own `map_f` a
 
 4. Assume that a word `w` appears `n` times. What is the **work** and **span** of `word_count_reduce` for this word, assuming a parallel implementation of the `reduce` function?
 
-**Enter answer here**
 
+  The work for any given word, assuming w = c1 per appearance:
+    W(n) = w * n   ->   W(n) = O(n)
+
+
+  This sequential approach can be shortened by reducing in parallel:
+    S(n) = S(n/2) + (w * n)   =>   S(n) = S(n/2) + O(n)  ->   S(n) = O(log(n))
 
 5. Why are we going through all this trouble? Couldn't I just use this function to count words?
 
@@ -52,7 +57,11 @@ for doc in docs:
 
 What is the problem that prevents us from easily parallelizing this solution?
 
-**Enter answer here**
+
+  In the nested loop of this funcion, the opperation requires access to the 
+  subset of prevoise counts for range {0, term-1}. If we wanted to paralize
+  this function, each call would require access to the subset
+  of counts for all of the nodes of each newst level in the resursive tree. 
 
 
 ## Part 2: Sentiment analysis
